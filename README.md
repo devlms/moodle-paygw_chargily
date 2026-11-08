@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/devlms/moodle-paygw_chargily/actions/workflows/ci.yml/badge.svg)](https://github.com/devlms/moodle-paygw_chargily/actions/workflows/ci.yml)
 [![Maturity](https://img.shields.io/badge/maturity-alpha-orange)](version.php)
+[![Sponsor](https://img.shields.io/badge/sponsor-this%20plugin-2438ff)](https://devlms.com/sponsors/?plugin=paygw_chargily)
 
 A Moodle payment gateway for [Chargily Pay](https://chargily.com/business/pay): learners in Algeria pay course fees with their EDAHABIA (Algérie Poste) or CIB card, in dinars. Works with any Moodle feature that takes payments, such as enrolment on payment.
 
@@ -33,6 +34,12 @@ Moodle 4.5 to 5.3. A Chargily Pay account (Algeria).
 ## How it works
 
 The payer chooses Chargily in Moodle's payment window, picks EDAHABIA or CIB, and goes to Chargily's checkout. When they come back, or when Chargily's webhook arrives, the plugin reads the checkout from Chargily's API; only a checkout Chargily reports as paid, for the exact amount, enrols the learner. Chargily takes whole dinars, so prices with centimes are rounded up.
+
+## Sponsors
+
+<!-- sponsors:start -->
+No sponsors yet. [Sponsor this plugin](https://devlms.com/sponsors/?plugin=paygw_chargily): your name or logo, with a link to your site, goes here and on [devlms.com/sponsors](https://devlms.com/sponsors/).
+<!-- sponsors:end -->
 
 ## Licence
 
