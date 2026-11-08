@@ -29,7 +29,6 @@ use paygw_chargily\api\client;
  * @covers     \paygw_chargily\local\webhook
  * @covers     \paygw_chargily\api\client
  * @covers     \paygw_chargily\gateway
- * @covers     \paygw_chargily\payhub\provider
  * @covers     \paygw_chargily\event\payment_received
  * @covers     \paygw_chargily\event\payment_failed
  */
@@ -67,7 +66,7 @@ final class checkout_manager_test extends \advanced_testcase {
     /**
      * A curl that answers with these bodies in order.
      *
-     * @param array[] $answers Decoded JSON answers.
+     * @param array ...$answers Decoded JSON answers.
      */
     private function answers(array ...$answers): void {
         foreach ($answers as $answer) {

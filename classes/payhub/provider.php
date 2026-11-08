@@ -20,6 +20,13 @@ use paygw_chargily\gateway;
 use paygw_chargily\local\checkout_manager;
 use paygw_payhub\request;
 
+defined('MOODLE_INTERNAL') || die();
+
+// The hub is optional: without it this class is not declared at all, so loading the file never fails.
+if (!interface_exists(\paygw_payhub\provider::class)) {
+    return;
+}
+
 /**
  * Lets the DevLMS payment hub offer Chargily Pay. Only the hub loads this class.
  *
