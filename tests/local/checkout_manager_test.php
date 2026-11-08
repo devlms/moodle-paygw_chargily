@@ -29,6 +29,7 @@ use paygw_chargily\api\client;
  * @covers     \paygw_chargily\local\webhook
  * @covers     \paygw_chargily\api\client
  * @covers     \paygw_chargily\gateway
+ * @covers     \paygw_chargily\payhub\provider
  */
 final class checkout_manager_test extends \advanced_testcase {
     /** @var string Test secret key. */
@@ -170,5 +171,37 @@ final class checkout_manager_test extends \advanced_testcase {
         }
         $this->assertSame(['DZD'], \paygw_chargily\gateway::get_supported_currencies());
         $this->assertSame(['edahabia'], \paygw_chargily\gateway::methods(['method_edahabia' => 1]));
+    }
+
+    public function test_through_the_hub_the_hub_saves_and_delivers(): void {
+        global $DB;
+        if (!class_exists(\paygw_payhub\hub::class)) {
+            $this->markTestSkipped('The payment hub is not installed.');
+        }
+        \core\plugininfo\paygw::enable_plugin('payhub', 1);
+        $accountid = (int) $DB->get_field('payment_gateways', 'accountid', ['gateway' => 'chargily']);
+        \core_payment\helper::save_payment_gateway((object) ['accountid' => $accountid, 'gateway' => 'payhub',
+            'enabled' => 1, 'config' => json_encode(['use_chargily' => 1])]);
+        $this->answers(['id' => 'chk_hub', 'checkout_url' => 'https://pay.chargily.net/test/checkout/chk_hub']);
+        $url = \paygw_payhub\hub::start(
+            'enrol_fee',
+            'fee',
+            $this->instanceid,
+            (int) $this->student->id,
+            'chargily',
+            'edahabia',
+            'Physics'
+        );
+        $this->assertSame('https://pay.chargily.net/test/checkout/chk_hub', $url);
+        $row = checkout_manager::find('chk_hub');
+        $this->assertSame('paygw_payhub', $row->owner);
+        $this->answers(['id' => 'chk_hub', 'status' => 'paid', 'amount' => 2501, 'currency' => 'dzd']);
+        $after = checkout_manager::sync((int) $row->id);
+        $this->assertSame(checkout_manager::PAID, $after->status);
+        $this->assertTrue(is_enrolled(\context_course::instance($this->course->id), $this->student));
+        $hubrow = $DB->get_record('paygw_payhub', ['reference' => $row->reference]);
+        $this->assertSame('paid', $hubrow->status);
+        $this->assertEquals($after->paymentid, $hubrow->paymentid);
+        $this->assertSame('chargily', $DB->get_field('payments', 'gateway', ['id' => $after->paymentid]));
     }
 }
