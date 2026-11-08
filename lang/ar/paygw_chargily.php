@@ -63,3 +63,5 @@ $string['secretkey_help'] = 'من ركن المطوّرين في لوحة تحك
 $string['waiting'] = 'لم يؤكّد Chargily هذه الدفعة بعد. يستغرق ذلك عادة بضع ثوانٍ.';
 $string['webhookurl'] = 'رابط الويب هوك';
 $string['webhookurl_help'] = 'يُرسَل هذا العنوان إلى Chargily مع كل عملية دفع، ولا حاجة لأي إعداد في لوحة تحكم Chargily.';
+$string['event:paymentfailed'] = 'فشل دفع Chargily أو أُلغي';
+$string['event:paymentreceived'] = 'استُلمت دفعة Chargily';

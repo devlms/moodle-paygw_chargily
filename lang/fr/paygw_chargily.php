@@ -63,3 +63,5 @@ $string['secretkey_help'] = 'Dans l\'espace développeurs de votre tableau de bo
 $string['waiting'] = 'Chargily n\'a pas encore confirmé ce paiement. Cela prend généralement quelques secondes.';
 $string['webhookurl'] = 'URL du webhook';
 $string['webhookurl_help'] = 'Cette adresse est transmise à Chargily avec chaque paiement ; rien à configurer dans le tableau de bord Chargily.';
+$string['event:paymentfailed'] = 'Paiement Chargily échoué ou annulé';
+$string['event:paymentreceived'] = 'Paiement Chargily reçu';

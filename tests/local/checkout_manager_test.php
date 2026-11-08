@@ -30,6 +30,8 @@ use paygw_chargily\api\client;
  * @covers     \paygw_chargily\api\client
  * @covers     \paygw_chargily\gateway
  * @covers     \paygw_chargily\payhub\provider
+ * @covers     \paygw_chargily\event\payment_received
+ * @covers     \paygw_chargily\event\payment_failed
  */
 final class checkout_manager_test extends \advanced_testcase {
     /** @var string Test secret key. */
@@ -99,7 +101,14 @@ final class checkout_manager_test extends \advanced_testcase {
         global $DB;
         $row = $this->started();
         $this->answers(['id' => 'chk_1', 'status' => 'paid', 'amount' => 2501, 'currency' => 'dzd']);
+        $sink = $this->redirectEvents();
         $after = checkout_manager::sync((int) $row->id);
+        $received = array_values(array_filter($sink->get_events(), fn($e) => $e instanceof \paygw_chargily\event\payment_received));
+        $this->assertCount(1, $received);
+        $this->assertEquals(2501, $received[0]->other['amount']);
+        $this->assertEquals($this->student->id, $received[0]->relateduserid);
+        $this->assertNotEmpty($received[0]->get_description());
+        $sink->close();
         $this->assertSame(checkout_manager::PAID, $after->status);
         $this->assertTrue(is_enrolled(\context_course::instance($this->course->id), $this->student));
         $payment = $DB->get_record('payments', ['id' => $after->paymentid], '*', MUST_EXIST);

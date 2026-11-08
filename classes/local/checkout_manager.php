@@ -214,6 +214,15 @@ class checkout_manager {
         $row->timemodified = time();
         $DB->update_record('paygw_chargily', (object) ['id' => $row->id, 'status' => $status,
             'paymentid' => $row->paymentid ?? null, 'timemodified' => $row->timemodified]);
+        $event = $status === self::PAID ? \paygw_chargily\event\payment_received::class
+            : \paygw_chargily\event\payment_failed::class;
+        $event::create([
+            'context' => \context_system::instance(),
+            'objectid' => $row->id,
+            'relateduserid' => $row->userid,
+            'other' => ['component' => $row->component, 'paymentarea' => $row->paymentarea, 'itemid' => (int) $row->itemid,
+                'amount' => (float) $row->amount, 'currency' => $row->currency, 'gateway' => 'chargily'],
+        ])->trigger();
     }
 
     /**
