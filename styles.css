@@ -1,0 +1,55 @@
+/* Chargily method picker. Scoped to .paygw-chargily. */
+.paygw-chargily {
+    max-width: 32rem;
+}
+
+.paygw-chargily-what {
+    margin-bottom: .25rem;
+    color: #495057;
+}
+
+.paygw-chargily-cost {
+    margin-bottom: 1.25rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.paygw-chargily-methods {
+    display: grid;
+    gap: .75rem;
+}
+
+.paygw-chargily-method {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: .9rem 1.1rem;
+    border: 1px solid #ced4da;
+    border-radius: .5rem;
+    background: #fff;
+    color: #1d2125;
+    text-align: left;
+}
+
+.paygw-chargily-method:hover,
+.paygw-chargily-method:focus {
+    border-color: #0f6cbf;
+    box-shadow: 0 0 0 .2rem rgba(15, 108, 191, .25);
+}
+
+.paygw-chargily-method-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.paygw-chargily-method-help {
+    color: #5b6269;
+    font-size: .875rem;
+}
+
+.paygw-chargily-note {
+    margin-top: 1rem;
+    color: #5b6269;
+    font-size: .875rem;
+}
